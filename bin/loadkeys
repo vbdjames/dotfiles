@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+MYDIR="$(dirname "$(readlink -f "$0")")"
+hdiutil attach -quiet "$MYDIR/keys.dmg"
+/Volumes/keys/load

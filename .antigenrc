@@ -1,0 +1,16 @@
+antigen use oh-my-zsh
+antigen bundle aliases
+antigen bundle ansible
+antigen bundle autojump
+antigen bundle common-aliases
+antigen bundle genpass
+antigen bundle git
+antigen bundle git-flow
+antigen bundle jsontools
+antigen bundle multipass
+antigen bundle sudo
+antigen bundle terraform
+antigen bundle themes
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen theme gallois
+antigen apply
