@@ -445,6 +445,11 @@ configure_iterm() {
 #   MANUAL STEPS                                                              #
 ###############################################################################
 #
+# load ssh keys
+# git init
+# git remote add origin git@github.com:vbdjames/dotfiles.git
+# git pull origin main
+#
 # Launch 1Password, and log in
 # Launch Alfred, "Begin Setup..."
 #   Paste in the powerpack password (from 1Password)
