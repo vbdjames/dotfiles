@@ -98,6 +98,7 @@ set_macos_defaults() {
   set_photos_defaults
   set_messages_defaults
   set_alfred_defaults
+  set_rectangle_defaults
 
   for app in "Dock" \
 	"Finder" \
@@ -435,6 +436,11 @@ set_alfred_defaults() {
   defaults write com.runningwithcrayons.Alfred-Preferences syncfolder -string "~/alfred"
   killall "Alfred" &> /dev/null
   open "/Applications/Alfred 5.app"
+}
+
+set_rectangle_defaults() {
+  defaults write com.knollsoft.Rectangle maximize -dict keyCode 36 modifierFlags 1835008
+  defaults write com.knollsoft.Rectangle almostMaximize -dict keyCode 36 modifierFlags 1572864
 }
 
 configure_iterm() {
