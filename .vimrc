@@ -62,4 +62,6 @@ set history=1000
 " Ignore mouse reporting.
 set mouse=
 
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start
 
