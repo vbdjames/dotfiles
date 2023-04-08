@@ -503,5 +503,9 @@ configure_iterm() {
 #   View content as: Automatic
 # Finder -> Settings -> Sidebar
 #   Add home directory
+# Set up hourly Time Machine backups to NAS
+
+
+
   
 main "$@"
