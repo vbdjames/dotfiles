@@ -486,6 +486,7 @@ configure_iterm() {
 #     visit it in system preferences to launch it
 # Launch Fantastical & add accounts
 #   much the same as email - preferences -> Accounts...
+#   Preferences -> Advanced -> Open conference calls in: Google Chrome
 # Launch Things -> preferences -> turn on things cloud
 # MailSuite
 #   download and install (https://smallcubed.com)
