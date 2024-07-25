@@ -3,5 +3,6 @@ antigen bundle aliases
 antigen bundle common-aliases
 antigen bundle git
 antigen bundle themes
+antigen bundle zsh-users/zsh-syntax-highlighting
 antigen theme gallois
 antigen apply
