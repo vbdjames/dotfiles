@@ -1,0 +1,10 @@
+# Comments and blank line are allowed
+
+\.git
+\.gitignore
+
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+RectangleConfig.json

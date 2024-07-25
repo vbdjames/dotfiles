@@ -8,3 +8,4 @@ brew 'tree'
 brew 'wget'
 
 cask 'iterm2'
+cask 'rectangle'
