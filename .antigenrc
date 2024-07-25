@@ -2,6 +2,7 @@ antigen use oh-my-zsh
 antigen bundle aliases
 antigen bundle ansible
 antigen bundle common-aliases
+antigen bundle genpass
 antigen bundle git
 antigen bundle terraform
 antigen bundle themes
