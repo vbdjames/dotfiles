@@ -6,3 +6,5 @@ brew 'mise'
 brew 'terraform'
 brew 'tree'
 brew 'wget'
+
+cask 'iterm2'
