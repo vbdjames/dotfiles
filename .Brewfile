@@ -1,4 +1,5 @@
 brew 'ansible'
 brew 'antigen'
+brew 'awscli'
 brew 'git'
 brew 'terraform'
