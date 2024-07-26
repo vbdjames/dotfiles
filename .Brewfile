@@ -7,5 +7,7 @@ brew 'terraform'
 brew 'tree'
 brew 'wget'
 
+cask '1password'
+cask '1password-cli'
 cask 'iterm2'
 cask 'rectangle'
