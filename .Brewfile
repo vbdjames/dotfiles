@@ -18,3 +18,6 @@ cask 'iterm2'
 cask 'obsidian'
 cask 'rectangle'
 cask 'visual-studio-code'
+
+brew 'mas'
+mas '1Password for Safari', id: 1569813296
