@@ -23,6 +23,8 @@ brew 'mas'
 mas '1Password for Safari', id: 1569813296
 mas 'Instapaper Save', id:1481302432
 mas 'Instapaper', id: 288545208
+mas 'Multi Monitor Wallpaper', id: 504284434
 mas 'Reeder 5', id: 1529448980
 mas 'Things 3', id: 904280696
 mas 'Xcode', id: 497799835
+
