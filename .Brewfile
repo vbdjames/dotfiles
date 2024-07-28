@@ -23,3 +23,4 @@ brew 'mas'
 mas '1Password for Safari', id: 1569813296
 mas 'Instapaper Save', id:1481302432
 mas 'Instapaper', id: 288545208
+mas 'Reeder 5', id: 1529448980
