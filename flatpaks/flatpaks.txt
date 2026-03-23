@@ -1,0 +1,12 @@
+# =============================================================================
+# flatpaks/flatpaks.txt
+# Flatpak App IDs to install from Flathub.
+# One App ID per line. Lines starting with # are comments.
+# Installed by install.sh do_flatpaks via: ./install.sh --flatpak
+# =============================================================================
+
+# Notes
+md.obsidian.Obsidian
+
+# Email
+org.mozilla.Thunderbird

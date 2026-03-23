@@ -1,0 +1,11 @@
+# ~/.zsh_aliases
+# Shell aliases — tracked in git.
+# Machine-specific aliases go in ~/.zshrc.local (not tracked in git).
+
+# Editors
+alias vim='nvim'
+
+# Git
+alias ga='git add'
+alias gcmsg='git commit -m'
+alias gb='git branch'
