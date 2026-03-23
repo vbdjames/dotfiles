@@ -46,7 +46,7 @@ do_hostname() {
     fi
 
     local desired
-    desired=$(cat "$file" | xargs)  # xargs trims whitespace/newlines
+    desired=$(cat "$file" | xargs)
 
     if [[ -z "$desired" ]]; then
         warn "system/hostname is empty — skipping."
@@ -68,12 +68,13 @@ do_hostname() {
 # THIRD PARTY REPOS
 # Adds vendor apt repos for software not in the standard Ubuntu repos.
 # Idempotent — skips repos that are already configured.
+# Note: DisplayLink repo requires a manual step — see RUNBOOK.md.
 # =============================================================================
 do_third_party_repos() {
     info "Setting up third party apt repos"
 
-    if ! have apt-get; then
-        warn "apt-get not found — skipping. Not a Debian/Ubuntu based system?"
+    if ! have apt; then
+        warn "apt not found — skipping. Not a Debian/Ubuntu based system?"
         return
     fi
 
@@ -128,8 +129,8 @@ do_third_party_repos() {
 do_apt_packages() {
     info "Installing apt packages"
 
-    if ! have apt-get; then
-        warn "apt-get not found — skipping. Not a Debian/Ubuntu based system?"
+    if ! have apt; then
+        warn "apt not found — skipping. Not a Debian/Ubuntu based system?"
         return
     fi
 
@@ -140,7 +141,7 @@ do_apt_packages() {
         return
     fi
 
-    sudo apt-get update -qq
+    sudo apt update -qq
 
     local packages=()
     while IFS= read -r line; do
@@ -152,7 +153,7 @@ do_apt_packages() {
     done < "$list"
 
     if [[ ${#packages[@]} -gt 0 ]]; then
-        sudo apt-get install -y "${packages[@]}" || \
+        sudo apt install -y "${packages[@]}" || \
             warn "Some packages failed to install — check output above"
     fi
 
@@ -181,7 +182,6 @@ do_stow() {
     for pkg in "${packages[@]}"; do
         if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
             info "  stow: $pkg"
-            # --restow re-applies even if already stowed (idempotent)
             stow --restow \
                  --dir="$DOTFILES_DIR" \
                  --target="$STOW_TARGET" \
@@ -231,10 +231,7 @@ do_flatpaks() {
     installed=$(flatpak list --app --columns=application 2>/dev/null)
 
     while IFS= read -r line; do
-        # Skip comment-only lines and blank lines
         [[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
-
-        # Strip inline comments (e.g. "com.example.App  # my note") and trim whitespace
         local app_id
         app_id=$(echo "$line" | sed 's/#.*//' | xargs)
         [[ -z "$app_id" ]] && continue
@@ -273,9 +270,6 @@ do_shell() {
         info "Shell changed. Log out and back in for it to take effect."
     fi
 
-    # Remove stock .bash_profile so zsh is picked up at login.
-    # Only removes it if it matches the default skeleton file — won't touch
-    # a customised one.
     if [[ -f "$HOME/.bash_profile" ]]; then
         if grep -q "# .bash_profile" "$HOME/.bash_profile"; then
             info "Removing stock .bash_profile so zsh is used at login"

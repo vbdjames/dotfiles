@@ -6,13 +6,12 @@
 #
 # Note: Firefox, Chrome, and 1Password are installed from third party repos
 # set up by do_third_party_repos. They must be listed here to be installed.
+#
+# Note: DisplayLink requires a manual repo setup step — see RUNBOOK.md Step 8.
 # =============================================================================
 
 # Shell
 zsh
-
-# Packaging
-flatpak
 
 # Editor
 neovim
@@ -38,3 +37,6 @@ google-chrome-stable
 # Password manager (repo added by do_third_party_repos)
 1password
 1password-cli
+
+# DisplayLink (requires Synaptics repo — see RUNBOOK.md Step 8)
+displaylink-driver
