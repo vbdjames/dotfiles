@@ -11,6 +11,9 @@
 # Shell
 zsh
 
+# Packaging
+flatpak
+
 # Editor
 neovim
 
