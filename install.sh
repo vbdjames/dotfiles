@@ -249,6 +249,34 @@ do_flatpaks() {
 }
 
 # =============================================================================
+# DEVPOD
+# Installs the DevPod CLI binary from GitHub releases.
+# Idempotent — skips if already installed.
+# =============================================================================
+do_devpod() {
+    info "Installing DevPod CLI"
+    if have devpod; then
+        info "DevPod already installed ($(devpod version 2>/dev/null || echo 'unknown version')) — skipping."
+        return
+    fi
+    local arch
+    case "$(uname -m)" in
+        x86_64)  arch="amd64" ;;
+        aarch64) arch="arm64" ;;
+        *)
+            warn "Unsupported architecture: $(uname -m) — skipping DevPod install."
+            return
+            ;;
+    esac
+    local url="https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-${arch}"
+    info "  Downloading DevPod for linux-${arch}"
+    curl -L -o /tmp/devpod "$url"
+    sudo install -c -m 0755 /tmp/devpod /usr/local/bin/devpod
+    rm -f /tmp/devpod
+    info "DevPod installed: $(devpod version 2>/dev/null || echo 'ok')"
+}
+
+# =============================================================================
 # CHANGE DEFAULT SHELL TO ZSH
 # Only runs if the current shell is not already zsh.
 # =============================================================================
@@ -294,6 +322,7 @@ main() {
         --repos)     do_third_party_repos ;;
         --apt)       do_apt_packages ;;
         --flatpak)   do_flatpaks ;;
+	--devpod)    do_devpod ;;
         all)
             do_hostname
             echo
@@ -301,6 +330,8 @@ main() {
             echo
             do_apt_packages
             echo
+            do_devpod
+	    echo
             do_stow
             echo
             do_shell
@@ -309,7 +340,7 @@ main() {
             ;;
         *)
             error "Unknown option: $1"
-            echo "Usage: $0 [--stow | --repos | --apt | --flatpak]"
+            echo "Usage: $0 [--stow | --repos | --apt | --flatpak | --devpod]"
             exit 1
             ;;
     esac
