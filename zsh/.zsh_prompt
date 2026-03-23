@@ -1,0 +1,21 @@
+# ~/.zsh_prompt
+# Zsh prompt configuration.
+# Multi-line prompt: directory + git branch (color-coded), then >
+
+autoload -Uz vcs_info
+precmd() {
+    vcs_info
+    if [[ -n $(git status --porcelain 2>/dev/null) ]]; then
+        _git_color='red'
+    else
+        _git_color='green'
+    fi
+}
+
+zstyle ':vcs_info:git:*' formats '(%b)'
+zstyle ':vcs_info:git:*' actionformats '(%b|%a)'
+
+setopt PROMPT_SUBST
+
+PROMPT='%F{blue}%~%f %F{$_git_color}${vcs_info_msg_0_}%f
+%F{white}>%f '

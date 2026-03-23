@@ -7,3 +7,6 @@
 
 # Load local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# Prompt
+[[ -f ~/.zsh_prompt ]] && source ~/.zsh_prompt
