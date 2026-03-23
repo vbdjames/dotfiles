@@ -254,26 +254,39 @@ do_flatpaks() {
 # Idempotent — skips if already installed.
 # =============================================================================
 do_devpod() {
-    info "Installing DevPod CLI"
-    if have devpod; then
+if have devpod; then
         info "DevPod already installed ($(devpod version 2>/dev/null || echo 'unknown version')) — skipping."
+    else
+        local arch
+        case "$(uname -m)" in
+            x86_64)  arch="amd64" ;;
+            aarch64) arch="arm64" ;;
+            *)
+                warn "Unsupported architecture: $(uname -m) — skipping DevPod install."
+                return
+                ;;
+        esac
+        local url="https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-${arch}"
+        info "  Downloading DevPod for linux-${arch}"
+        curl -L -o /tmp/devpod "$url"
+        sudo install -c -m 0755 /tmp/devpod /usr/local/bin/devpod
+        rm -f /tmp/devpod
+        info "DevPod installed: $(devpod version 2>/dev/null || echo 'ok')"
+    fi
+    info "Configuring DevPod Podman provider"
+    if devpod provider list 2>/dev/null | grep -q "^podman"; then
+        info "DevPod Podman provider already configured — skipping."
         return
     fi
-    local arch
-    case "$(uname -m)" in
-        x86_64)  arch="amd64" ;;
-        aarch64) arch="arm64" ;;
-        *)
-            warn "Unsupported architecture: $(uname -m) — skipping DevPod install."
-            return
-            ;;
-    esac
-    local url="https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-${arch}"
-    info "  Downloading DevPod for linux-${arch}"
-    curl -L -o /tmp/devpod "$url"
-    sudo install -c -m 0755 /tmp/devpod /usr/local/bin/devpod
-    rm -f /tmp/devpod
-    info "DevPod installed: $(devpod version 2>/dev/null || echo 'ok')"
+    local podman_path
+    podman_path=$(command -v podman 2>/dev/null || true)
+    if [[ -z "$podman_path" ]]; then
+        warn "podman not found in PATH — skipping DevPod provider setup."
+        warn "Run ./install.sh --devpod after installing podman."
+        return
+    fi
+    devpod provider add docker --name podman -o DOCKER_PATH="$podman_path"
+    info "DevPod Podman provider configured."
 }
 
 # =============================================================================
@@ -321,8 +334,8 @@ main() {
         --stow)      do_stow ;;
         --repos)     do_third_party_repos ;;
         --apt)       do_apt_packages ;;
-        --flatpak)   do_flatpaks ;;
-	--devpod)    do_devpod ;;
+        --flatpak)         do_flatpaks ;;
+	--devpod)          do_devpod ;;
         all)
             do_hostname
             echo
