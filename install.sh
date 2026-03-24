@@ -274,7 +274,7 @@ if have devpod; then
         info "DevPod installed: $(devpod version 2>/dev/null || echo 'ok')"
     fi
     info "Configuring DevPod Podman provider"
-    if devpod provider list 2>/dev/null | grep -q "^podman"; then
+    if devpod provider list 2>/dev/null | grep -q "^\s*podman"; then
         info "DevPod Podman provider already configured — skipping."
         return
     fi
