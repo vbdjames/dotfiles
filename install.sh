@@ -290,6 +290,22 @@ if have devpod; then
 }
 
 # =============================================================================
+# CLAUDE CODE
+# Installs the Claude Code CLI via the official installer.
+# Idempotent — skips if already installed.
+# =============================================================================
+do_claude_code() {
+    if have claude; then
+        info "Claude Code already installed ($(claude --version 2>/dev/null || echo 'unknown version')) — skipping."
+        return
+    fi
+
+    info "Installing Claude Code"
+    curl -fsSL https://claude.ai/install.sh | bash
+    info "Claude Code installed: $(claude --version 2>/dev/null || echo 'ok')"
+}
+
+# =============================================================================
 # CHANGE DEFAULT SHELL TO ZSH
 # Only runs if the current shell is not already zsh.
 # =============================================================================
@@ -336,6 +352,7 @@ main() {
         --apt)       do_apt_packages ;;
         --flatpak)         do_flatpaks ;;
 	--devpod)          do_devpod ;;
+        --claude)          do_claude_code ;;
         all)
             do_hostname
             echo
@@ -345,6 +362,8 @@ main() {
             echo
             do_devpod
 	    echo
+            do_claude_code
+            echo
             do_stow
             echo
             do_shell
@@ -353,7 +372,7 @@ main() {
             ;;
         *)
             error "Unknown option: $1"
-            echo "Usage: $0 [--stow | --repos | --apt | --flatpak | --devpod]"
+            echo "Usage: $0 [--stow | --repos | --apt | --flatpak | --devpod | --claude]"
             exit 1
             ;;
     esac
