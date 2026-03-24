@@ -72,6 +72,8 @@ This will:
 - Set the hostname to `sophie`
 - Add third party apt repos (1Password, Chrome, Mozilla Firefox)
 - Install all apt packages from `apt/packages.txt` including DisplayLink
+- Install the DevPod CLI
+- Install Claude Code
 - Stow all config packages (zsh, git, ssh, kde, tmux)
 - Change default shell to zsh
 - Install all Flatpaks from `flatpaks/flatpaks.txt`

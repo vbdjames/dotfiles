@@ -94,6 +94,16 @@ If you add a new config file to a package directory:
 ./install.sh --stow
 ```
 
+### Selective bootstrap steps
+
+```bash
+./install.sh --repos     # only set up third-party apt repos
+./install.sh --apt       # only install apt packages
+./install.sh --flatpak   # only install Flatpaks
+./install.sh --devpod    # only install/configure DevPod
+./install.sh --claude    # only install Claude Code
+```
+
 ### Machine-specific overrides
 
 Some settings shouldn't be the same on every machine (work email, local paths, etc.).
