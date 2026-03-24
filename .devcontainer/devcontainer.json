@@ -1,0 +1,20 @@
+{
+  "name": "dotfiles",
+  "image": "ubuntu:24.04",
+
+  "containerEnv": {
+    "DEBIAN_FRONTEND": "noninteractive"
+  },
+
+  "runArgs": ["--userns=keep-id"],
+
+  "onCreateCommand": "apt-get update -qq && apt-get install -y zsh git curl stow tmux sudo",
+
+  "postCreateCommand": "/workspaces/dotfiles/.devcontainer/setup.sh",
+
+  "remoteUser": "root",
+
+  "remoteEnv": {
+    "SHELL": "/bin/zsh"
+  }
+}
