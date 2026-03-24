@@ -127,6 +127,21 @@ Thunderbird is installed as a Flatpak via `install.sh`. After launch:
 
 ---
 
+## Step 8 — Configure Obsidian
+
+Obsidian is installed as a Flatpak via `install.sh`. After launch:
+
+1. Use Obsidian Sync to add each vault:
+   - Login (credentials are in 1Password)
+   - Select each vault to be synced:
+     - Sync all other types: ON
+     - Active community plugins list: ON
+     - Installed community plugins: ON
+   - Close and re-open Obsidian
+2. Enable Remix Icons: Iconize -> Add predefined icon pack
+
+---
+
 ## Step 8 — Verify DisplayLink
 
 Connect the dock and verify the monitors come up:
