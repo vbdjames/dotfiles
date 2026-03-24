@@ -10,3 +10,4 @@
 
 # Prompt
 [[ -f ~/.zsh_prompt ]] && source ~/.zsh_prompt
+export PATH="$HOME/.local/bin:$PATH"
