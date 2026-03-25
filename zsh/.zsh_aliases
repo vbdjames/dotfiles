@@ -6,6 +6,7 @@
 alias vim='nvim'
 
 # Git
+alias lg='lazygit'
 alias ga='git add'
 alias gcmsg='git commit -m'
 alias gb='git branch'

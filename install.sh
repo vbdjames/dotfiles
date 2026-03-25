@@ -177,6 +177,7 @@ do_stow() {
         kde
         ssh
         tmux
+        lazygit
     )
 
     for pkg in "${packages[@]}"; do
@@ -306,6 +307,45 @@ do_claude_code() {
 }
 
 # =============================================================================
+# LAZYGIT
+# Installs the lazygit binary from GitHub releases.
+# Idempotent — skips if already installed.
+# =============================================================================
+do_lazygit() {
+    if have lazygit; then
+        info "lazygit already installed ($(lazygit --version 2>/dev/null | head -1 || echo 'unknown version')) — skipping."
+        return
+    fi
+
+    local arch
+    case "$(uname -m)" in
+        x86_64)  arch="x86_64" ;;
+        aarch64) arch="arm64" ;;
+        *)
+            warn "Unsupported architecture: $(uname -m) — skipping lazygit install."
+            return
+            ;;
+    esac
+
+    local version
+    version=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
+        | grep '"tag_name"' | sed 's/.*"v\([^"]*\)".*/\1/')
+
+    if [[ -z "$version" ]]; then
+        warn "Could not determine latest lazygit version — skipping."
+        return
+    fi
+
+    local url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_${arch}.tar.gz"
+    info "  Downloading lazygit v${version} for Linux-${arch}"
+    curl -L -o /tmp/lazygit.tar.gz "$url"
+    tar -xzf /tmp/lazygit.tar.gz -C /tmp lazygit
+    sudo install -c -m 0755 /tmp/lazygit /usr/local/bin/lazygit
+    rm -f /tmp/lazygit.tar.gz /tmp/lazygit
+    info "lazygit installed: $(lazygit --version 2>/dev/null | head -1 || echo 'ok')"
+}
+
+# =============================================================================
 # CHANGE DEFAULT SHELL TO ZSH
 # Only runs if the current shell is not already zsh.
 # =============================================================================
@@ -353,6 +393,7 @@ main() {
         --flatpak)         do_flatpaks ;;
 	--devpod)          do_devpod ;;
         --claude)          do_claude_code ;;
+        --lazygit)         do_lazygit ;;
         all)
             do_hostname
             echo
@@ -364,6 +405,8 @@ main() {
 	    echo
             do_claude_code
             echo
+            do_lazygit
+            echo
             do_stow
             echo
             do_shell
@@ -372,7 +415,7 @@ main() {
             ;;
         *)
             error "Unknown option: $1"
-            echo "Usage: $0 [--stow | --repos | --apt | --flatpak | --devpod | --claude]"
+            echo "Usage: $0 [--stow | --repos | --apt | --flatpak | --devpod | --claude | --lazygit]"
             exit 1
             ;;
     esac
