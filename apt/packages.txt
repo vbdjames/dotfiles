@@ -26,6 +26,7 @@ curl
 wget
 htop
 stow
+partitionmanager
 
 # Container tooling
 podman-compose
