@@ -58,6 +58,18 @@ do_third_party_repos() {
         info "  1Password repo already configured — skipping"
     fi
 
+    # Visual Studio Code
+    if [[ ! -f /etc/apt/sources.list.d/vscode.list ]]; then
+        info "  Adding VS Code repo"
+        curl -sS https://packages.microsoft.com/keys/microsoft.asc \
+            | sudo gpg --dearmor \
+            | sudo tee /usr/share/keyrings/microsoft-archive-keyring.gpg > /dev/null
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" \
+            | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+    else
+        info "  VS Code repo already configured — skipping"
+    fi
+
     # Google Chrome
     if [[ ! -f /etc/apt/sources.list.d/google-chrome.list ]]; then
         info "  Adding Google Chrome repo"
@@ -363,6 +375,13 @@ do_shell() {
 main() {
     info "dotfiles bootstrap starting"
     info "Dotfiles dir: $DOTFILES_DIR"
+    echo
+
+    # Cache sudo credentials upfront so piped commands (curl | sudo tee etc.)
+    # don't fail trying to prompt for a password mid-pipe.
+    if have sudo; then
+        sudo -v
+    fi
     echo
 
     case "${1:-all}" in

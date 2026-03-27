@@ -33,6 +33,9 @@ podman-compose
 firefox
 google-chrome-stable
 
+# Editor / IDE (repo added by do_third_party_repos)
+code
+
 # Password manager (repo added by do_third_party_repos)
 1password
 1password-cli
