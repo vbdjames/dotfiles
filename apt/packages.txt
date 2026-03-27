@@ -24,6 +24,7 @@ curl
 wget
 htop
 stow
+flatpak
 
 # Container tooling
 podman-compose
