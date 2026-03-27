@@ -12,7 +12,8 @@ dotfiles/
 ├── .gitignore
 │
 ├── apt/
-│   └── packages.txt            # system packages to install via apt (Kubuntu)
+│   ├── packages.txt            # system packages to install via apt (Ubuntu-based)
+│   └── packages.<hostname>.txt # host-specific packages (optional, auto-loaded)
 │
 ├── zsh/                        # stow package → symlinks into ~
 │   ├── .zshrc
@@ -26,7 +27,7 @@ dotfiles/
 │   └── .ssh/
 │       └── config              # SSH client config (NO keys — those stay in ~/.ssh)
 │
-├── kde/                        # stow package → symlinks into ~
+├── kde/                        # stow package → symlinks into ~ (KDE only)
 │   └── README.md               # instructions for exporting your KDE settings
 │
 ├── tmux/                       # stow package → symlinks into ~
@@ -36,13 +37,16 @@ dotfiles/
 ├── flatpaks/
 │   └── flatpaks.txt            # list of Flatpak App IDs to install
 │
-└── system/
-    └── hostname                # desired hostname for this machine
+└── lazygit/                    # stow package → symlinks into ~
+    └── .config/lazygit/
+        └── config.yml
 ```
 
-Each top-level directory (except `apt/`, `flatpaks/`, and `system/`) is a
+Each top-level directory (except `apt/` and `flatpaks/`) is a
 **Stow package**. Stow mirrors the directory tree inside each package into `$HOME`,
 creating symlinks. So `dotfiles/zsh/.zshrc` becomes `~/.zshrc`.
+
+The `kde` package is only stowed when `$XDG_CURRENT_DESKTOP` contains `KDE`.
 
 ---
 

@@ -1,33 +1,28 @@
-# Sophie — Setup Runbook
+# Setup Runbook
 
-Fresh install runbook for the HP EliteBook 840 G8 running Kubuntu.
-
----
-
-## Hardware
-
-- **Machine**: HP EliteBook 840 G8
-- **CPU/GPU**: Intel TigerLake, Iris Xe Graphics
-- **Secure Boot**: disabled
-- **Dock**: StarTech DisplayLink hub (see Known Issues)
-- **Monitors**: one direct HDMI, two via DisplayLink dock
+Fresh install runbook for Ubuntu-based systems.
 
 ---
 
 ## Prerequisites
 
-- Kubuntu 25.10 USB installer
+- Ubuntu-based installer USB (Ubuntu, Kubuntu, etc.)
 - Internet connection
 - 1Password credentials
 
 ---
 
-## Step 1 — Install Kubuntu
+## Step 1 — Install the OS
 
-1. Boot from the Kubuntu 25.10 USB installer
-2. Follow the installer — set up disk, user account (`djames`), timezone
+1. Boot from your Ubuntu-based installer
+2. Follow the installer — set up disk, user account, timezone
 3. Select **minimal installation** to keep the base clean
-4. Complete the install and reboot
+4. **Choose your hostname carefully.** The bootstrap uses it to automatically
+   load machine-specific packages: if `apt/packages.<hostname>.txt` exists in
+   this repo it will be installed alongside the base packages. Pick a short,
+   memorable name and create a matching file in `apt/` for each machine you
+   manage (e.g. `apt/packages.sophie.txt`).
+5. Complete the install and reboot
 
 ---
 
@@ -40,12 +35,16 @@ sudo reboot
 
 ---
 
-## Step 3 — Set up DisplayLink repo
+## Step 3 — Machine-specific pre-bootstrap steps
 
-The Synaptics APT repository keyring must be installed manually before running
-the bootstrap, as the keyring package requires a browser download.
+Some machines require manual setup before the bootstrap can run — typically a
+third-party APT keyring that must be downloaded via a browser rather than curl.
+Check whether your machine has any such requirements before continuing.
 
-1. Download the **Synaptics APT Repository** keyring package from:
+**sophie — DisplayLink:** The Synaptics APT repository keyring must be installed
+before the bootstrap, as it requires a browser download.
+
+1. Download the **Synaptics APT Repository** keyring from:
    https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu
 2. Install it:
 
@@ -69,12 +68,12 @@ chmod +x install.sh
 
 This will:
 
-- Set the hostname to `sophie`
 - Add third party apt repos (1Password, Chrome, Mozilla Firefox)
-- Install all apt packages from `apt/packages.txt` including DisplayLink
+- Install all apt packages from `apt/packages.txt` and `apt/packages.<hostname>.txt` if it exists
 - Install the DevPod CLI
 - Install Claude Code
-- Stow all config packages (zsh, git, ssh, kde, tmux)
+- Install lazygit
+- Stow all config packages (zsh, git, ssh, tmux, lazygit; and kde on KDE systems)
 - Change default shell to zsh
 - Install all Flatpaks from `flatpaks/flatpaks.txt`
 
@@ -138,43 +137,15 @@ Obsidian is installed as a Flatpak via `install.sh`. After launch:
      - Active community plugins list: ON
      - Installed community plugins: ON
    - Close and re-open Obsidian
-2. Enable Remix Icons: Iconize -> Add predefined icon pack
+2. Enable Remix Icons: Iconize → Add predefined icon pack
 
 ---
 
-## Step 8 — Verify DisplayLink
-
-Connect the dock and verify the monitors come up:
-
-```bash
-systemctl status displaylink
-lsmod | grep evdi
-```
-
-If monitors don't appear, check logs:
-
-```bash
-journalctl -u displaylink --since "5 minutes ago"
-```
-
----
-
-## Step 9 — KDE settings
+## Step 9 — KDE settings *(KDE systems only)*
 
 Once KDE is configured to your liking, export and track the settings:
 
 See [`kde/README.md`](kde/README.md) in the dotfiles repo for instructions.
-
----
-
-## Known Issues
-
-### DisplayLink — not yet verified on Kubuntu
-
-The DisplayLink setup above has been documented but not yet tested on this
-specific hardware. On Kubuntu/Ubuntu, DisplayLink is officially supported via
-DKMS and should work without the kernel module complications experienced on
-Fedora Kinoite/ostree.
 
 ---
 
@@ -192,7 +163,7 @@ sudo apt update && sudo apt upgrade -y
 cd ~/dotfiles && git pull && ./install.sh
 ```
 
-### Check DisplayLink
+### Check DisplayLink *(sophie)*
 
 ```bash
 systemctl status displaylink

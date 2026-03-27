@@ -33,38 +33,6 @@ require() {
 }
 
 # =============================================================================
-# HOSTNAME
-# Reads system/hostname and applies it if it differs from the current hostname.
-# Idempotent — skips if already correct.
-# =============================================================================
-do_hostname() {
-    local file="$DOTFILES_DIR/system/hostname"
-
-    if [[ ! -f "$file" ]]; then
-        warn "No system/hostname file found — skipping."
-        return
-    fi
-
-    local desired
-    desired=$(cat "$file" | xargs)
-
-    if [[ -z "$desired" ]]; then
-        warn "system/hostname is empty — skipping."
-        return
-    fi
-
-    local current
-    current=$(hostnamectl hostname)
-
-    if [[ "$current" == "$desired" ]]; then
-        info "Hostname already set to: $current — skipping."
-    else
-        info "Setting hostname: $current → $desired"
-        sudo hostnamectl set-hostname "$desired"
-    fi
-}
-
-# =============================================================================
 # THIRD PARTY REPOS
 # Adds vendor apt repos for software not in the standard Ubuntu repos.
 # Idempotent — skips repos that are already configured.
@@ -124,6 +92,7 @@ do_third_party_repos() {
 # APT PACKAGES
 # Reads apt/packages.txt — one package name per line.
 # Lines starting with # are comments. Blank lines are ignored.
+# Also reads apt/packages.<hostname>.txt if it exists (host-specific packages).
 # Only runs on apt-based systems (Kubuntu etc.) — skips gracefully otherwise.
 # =============================================================================
 do_apt_packages() {
@@ -144,13 +113,17 @@ do_apt_packages() {
     sudo apt update -qq
 
     local packages=()
-    while IFS= read -r line; do
-        [[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
-        local pkg
-        pkg=$(echo "$line" | sed 's/#.*//' | xargs)
-        [[ -z "$pkg" ]] && continue
-        packages+=("$pkg")
-    done < "$list"
+    local read_list
+    for read_list in "$list" "$DOTFILES_DIR/apt/packages.$(hostname).txt"; do
+        [[ ! -f "$read_list" ]] && continue
+        while IFS= read -r line; do
+            [[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
+            local pkg
+            pkg=$(echo "$line" | sed 's/#.*//' | xargs)
+            [[ -z "$pkg" ]] && continue
+            packages+=("$pkg")
+        done < "$read_list"
+    done
 
     if [[ ${#packages[@]} -gt 0 ]]; then
         sudo apt install -y "${packages[@]}" || \
@@ -174,11 +147,17 @@ do_stow() {
     local packages=(
         zsh
         git
-        kde
         ssh
         tmux
         lazygit
     )
+
+    # KDE config only on KDE Plasma systems
+    if [[ "${XDG_CURRENT_DESKTOP:-}" == *KDE* ]]; then
+        packages+=(kde)
+    else
+        info "  skipping kde (not a KDE session)"
+    fi
 
     for pkg in "${packages[@]}"; do
         if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
@@ -255,7 +234,7 @@ do_flatpaks() {
 # Idempotent — skips if already installed.
 # =============================================================================
 do_devpod() {
-if have devpod; then
+    if have devpod; then
         info "DevPod already installed ($(devpod version 2>/dev/null || echo 'unknown version')) — skipping."
     else
         local arch
@@ -395,8 +374,6 @@ main() {
         --claude)          do_claude_code ;;
         --lazygit)         do_lazygit ;;
         all)
-            do_hostname
-            echo
             do_third_party_repos
             echo
             do_apt_packages

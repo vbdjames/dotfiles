@@ -1,0 +1,11 @@
+# =============================================================================
+# apt/packages.sophie.txt
+# Host-specific packages for sophie (HP EliteBook 840 G8 with DisplayLink dock).
+# Loaded automatically by install.sh when hostname matches.
+# =============================================================================
+
+# KDE-specific tools
+partitionmanager
+
+# DisplayLink (requires Synaptics repo — see RUNBOOK.md Step 3)
+displaylink-driver

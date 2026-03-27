@@ -1,4 +1,3 @@
-cat > ~/dotfiles/.devcontainer/setup.sh << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -16,6 +15,3 @@ ln -sf /workspaces/dotfiles/tmux/.config/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
 # Set zsh as default shell
 chsh -s $(which zsh) root
-EOF
-
-chmod +x ~/dotfiles/.devcontainer/setup.sh

@@ -9,5 +9,3 @@
     # Machine-specific overrides (work email etc.) — not tracked in git
     path = ~/.gitconfig.local
 
-[alias]
-    # Add your git aliases here

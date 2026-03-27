@@ -1,14 +1,12 @@
 # =============================================================================
 # apt/packages.txt
-# System packages installed via apt on Kubuntu/Ubuntu-based systems.
+# System packages installed via apt on Ubuntu-based systems.
 # One package name per line. Lines starting with # are comments.
 # Installed by install.sh do_apt_packages via: ./install.sh --apt
 #
 # Note: Firefox, Chrome, and 1Password are installed from third party repos
 # set up by do_third_party_repos. They must be listed here to be installed.
-#
-# Note: DisplayLink requires a manual repo setup step — see RUNBOOK.md Step 8.
-# =============================================================================
+#=============================================================================
 
 # Shell
 zsh
@@ -26,7 +24,6 @@ curl
 wget
 htop
 stow
-partitionmanager
 
 # Container tooling
 podman-compose
@@ -38,6 +35,3 @@ google-chrome-stable
 # Password manager (repo added by do_third_party_repos)
 1password
 1password-cli
-
-# DisplayLink (requires Synaptics repo — see RUNBOOK.md Step 8)
-displaylink-driver
