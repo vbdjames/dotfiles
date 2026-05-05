@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Tailscale
+Exec=tailscale systray
+Icon=tailscale
+X-GNOME-Autostart-enabled=true
