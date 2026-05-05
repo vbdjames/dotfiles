@@ -6,6 +6,7 @@
 
 # KDE-specific tools
 partitionmanager
+kompare
 
 # DisplayLink (requires Synaptics repo — see RUNBOOK.md Step 3)
 displaylink-driver
