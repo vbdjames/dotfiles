@@ -9,3 +9,5 @@
     # Machine-specific overrides (work email etc.) — not tracked in git
     path = ~/.gitconfig.local
 
+[credential]
+        helper = !'/usr/local/bin/devpod' agent git-credentials --port 12049
