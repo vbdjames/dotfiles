@@ -175,6 +175,7 @@ do_stow() {
         ssh
         tmux
         lazygit
+        autostart
     )
 
     # KDE config only on KDE Plasma systems
