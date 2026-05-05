@@ -39,3 +39,6 @@ code
 # Password manager (repo added by do_third_party_repos)
 1password
 1password-cli
+
+# VPN (repo added by do_third_party_repos)
+tailscale

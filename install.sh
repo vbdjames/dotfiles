@@ -97,6 +97,19 @@ do_third_party_repos() {
         info "  Mozilla repo already configured — skipping"
     fi
 
+    # Tailscale
+    if [[ ! -f /etc/apt/sources.list.d/tailscale.list ]]; then
+        info "  Adding Tailscale repo"
+        local codename
+        codename=$(lsb_release -cs 2>/dev/null || echo "noble")
+        curl -fsSL "https://pkgs.tailscale.com/stable/ubuntu/${codename}.noarmor.gpg" \
+            | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg > /dev/null
+        curl -fsSL "https://pkgs.tailscale.com/stable/ubuntu/${codename}.tailscale-keyring.list" \
+            | sudo tee /etc/apt/sources.list.d/tailscale.list > /dev/null
+    else
+        info "  Tailscale repo already configured — skipping"
+    fi
+
     info "Third party repos complete."
 }
 
