@@ -1,20 +1,21 @@
 {
   "name": "dotfiles",
-  "image": "ubuntu:24.04",
-
-  "containerEnv": {
-    "DEBIAN_FRONTEND": "noninteractive"
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
   },
-
-  "runArgs": ["--userns=keep-id"],
-
-  "onCreateCommand": "apt-get update -qq && apt-get install -y zsh git curl stow tmux sudo",
-
-  "postCreateCommand": "/workspaces/dotfiles/.devcontainer/setup.sh",
-
-  "remoteUser": "root",
-
-  "remoteEnv": {
-    "SHELL": "/bin/zsh"
-  }
+  "remoteUser": "vscode",
+  "postCreateCommand": "bash .devcontainer/bootstrap.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind,consistency=cached"
+  ]
 }

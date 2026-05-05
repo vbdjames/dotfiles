@@ -151,7 +151,7 @@ do_apt_packages() {
     done
 
     if [[ ${#packages[@]} -gt 0 ]]; then
-        sudo apt install -y "${packages[@]}" || \
+        sudo apt install -y --allow-downgrades "${packages[@]}" || \
             warn "Some packages failed to install — check output above"
     fi
 
